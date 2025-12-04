@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fresi-Go - Tu Antojo Gourmet en San Salvador</title>
+    
+    <!-- Bootstrap y Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Google Font: Poppins (Moderna y Juvenil) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Favicon (Usaremos el logo) -->
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <!-- Estilos Personalizados para Fresi-Go -->
+    <style>
+        /* Paleta de colores Fresi-Go */
+        :root {
+            --color-primario: #D92B48; /* Rojo Fresi-Go */
+            --color-secundario: #fdfbf7; /* Crema/Hueso sutil */
+            --color-acento: #4CAF50;     /* Verde Fresi-Go */
+            --color-texto: #333333;      /* Gris oscuro */
+            --color-blanco: #FFFFFF;
+        }
+
+        body {
+            color: var(--color-texto);
+            font-family: 'Poppins', sans-serif; /* Fuente moderna */
+            background-color: var(--color-secundario); /* Fondo general */
+        }
+
+        /* Barra de navegación moderna */
+        .navbar-custom {
+            background-color: var(--color-blanco);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* Sombra sutil */
+        }
+
+        .navbar-custom .navbar-brand img {
+            height: 70px; /* Tamaño del logo */
+        }
+
+        .navbar-custom .nav-link {
+            color: var(--color-texto);
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-custom .nav-link.active,
+        .navbar-custom .nav-link:hover {
+            color: var(--color-primario);
+            border-bottom: 2px solid var(--color-primario);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--color-primario);
+            font-weight: 700;
+        }
+
+        /* Botón personalizado */
+        .btn-primary-custom {
+            background-color: var(--color-primario);
+            border-color: var(--color-primario);
+            color: var(--color-blanco);
+            font-weight: 600;
+            border-radius: 50px; /* Botones redondeados */
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary-custom:hover {
+            background-color: #b0223a; /* Rojo más oscuro */
+            border-color: #b0223a;
+            color: var(--color-blanco);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .text-accent {
+            color: var(--color-acento) !important;
+        }
+
+        .bg-white-card {
+            background-color: var(--color-blanco);
+            border-radius: 1rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .bg-white-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+        }
+
+        .footer-custom {
+            background-color: var(--color-primario);
+            color: var(--color-blanco);
+        }
+        
+        .footer-custom-dark {
+             background-color: #333;
+             color: var(--color-blanco);
+        }
+
+        .footer-custom a {
+            color: var(--color-blanco);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-custom a:hover {
+            color: #f0f0f0;
+            text-decoration: underline;
+        }
+
+        /* Lógica de Páginas (Sin cambios) */
+        .page-section {
+            display: none;
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+            animation: fadeIn 0.5s;
+        }
+        .page-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Contenedores multimedia responsivos */
+        .map-container, 
+        .video-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 */
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .map-container iframe,
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            width: 100%; height: 100%; border: 0;
+        }
+        
+        /* Galería de imágenes */
+        .gallery-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .gallery-img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        /* Reproductor de Audio Fijo */
+        .audio-player {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        .audio-player button {
+            background-color: var(--color-primario);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .audio-player span {
+            margin-left: 10px;
+            font-weight: 500;
+            color: var(--color-primario);
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Barra de Navegación con Logo Fresi-Go -->
+    <nav class="navbar navbar-expand-lg navbar-custom py-3 sticky-top">
+        <div class="container">
+            <!-- Logo (usa 'logo.png' del directorio) -->
+            <a href="#" class="navbar-brand" onclick="showPage('page-inicio')">
+                <img src="logo.png" alt="Fresi-Go Logo">
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                 <i class="fas fa-bars" style="color: var(--color-primario);"></i>
+            </button>
+
+            <!-- Menú de navegación actualizado -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a href="#" class="nav-link active" onclick="showPage('page-inicio', this)">Inicio</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" onclick="showPage('page-acerca', this)">Acerca de Fresi-Go</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" onclick="showPage('page-productos', this)">Nuestros Productos</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" onclick="showPage('page-galeria', this)">Galería</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" onclick="showPage('page-contacto', this)">Contacto</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenedor Principal de "Páginas" -->
+    <main class="container mt-4">
+
+        <!-- ============================================= -->
+        <!-- PÁGINA 1: INICIO (Adaptada a Fresi-Go)        -->
+        <!-- ============================================= -->
+        <div id="page-inicio" class="page-section active">
+            
+            <div class="text-center bg-white-card p-5 rounded-3 mb-5">
+                 <h1>¡El Sabor de la Frescura!</h1>
+                 <p class="lead">"Fresi-Go: Tu antojo gourmet, directo a tu puerta."</p>
+                 <p>Las mejores fresas con crema de San Salvador, preparadas con ingredientes 100% frescos y recetas artesanales. ¿List@ para tu antojo?</p>
+            </div>
+
+            <section class="my-5">
+                <h2 class="text-center mb-4">¿Por qué Fresi-Go?</h2>
+                <div class="row">
+                    <div class="col-md-4 text-center mb-3">
+                        <div class="bg-white-card p-4 h-100">
+                            <i class="fas fa-gem fa-3x text-accent mb-3"></i>
+                            <h4>Calidad Gourmet</h4>
+                            <p>Usamos solo fresas premium, seleccionadas a mano, y una receta de crema secreta que te encantará.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center mb-3">
+                        <div class="bg-white-card p-4 h-100">
+                            <i class="fas fa-magic-wand-sparkles fa-3x text-accent mb-3"></i>
+                            <h4>Toppings Únicos</h4>
+                            <p>Desde chocolate belga hasta granola artesanal y chispas de oro comestible. ¡Personaliza tu antojo!</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center mb-3">
+                        <div class="bg-white-card p-4 h-100">
+                            <i class="fas fa-shipping-fast fa-3x text-accent mb-3"></i>
+                            <h4>Delivery Rápido</h4>
+                            <p>Llegamos a la puerta de tu casa en San Salvador. Rápido, fresco y listo para disfrutar.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="my-5">
+                 <div class="bg-white-card p-5">
+                    <h2 class="mb-4">Nuestra Promesa</h2>
+                    <ul class="list-unstyled fs-5">
+                        <li class="mb-2"><i class="fas fa-check-circle text-accent me-2"></i>Fresas 100% Salvadoreñas</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-accent me-2"></i>Recetas de Crema Artesanales</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-accent me-2"></i>El Postre Perfecto para Compartir (o no)</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-accent me-2"></i>Empaques Lindos y Ecológicos</li>
+                    </ul>
+                 </div>
+            </section>
+
+            <section class="my-5">
+                <h2 class="text-center mb-4">Lo que dicen nuestros clientes</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="bg-white-card p-4 h-100">
+                            <blockquote class="blockquote">
+                                <p>"¡Las mejores fresas con crema de San Salvador! El delivery fue súper rápido y llegaron perfectas. 10/10."</p>
+                                <footer class="blockquote-footer">Ana G, <cite>Cliente Frecuente</cite></footer>
+                            </blockquote>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                         <div class="bg-white-card p-4 h-100">
+                            <blockquote class="blockquote">
+                                <p>"Pedí Fresi-Go para una reunión y todos quedaron fascinados. Los toppings son otro nivel. ¡Súper recomendado!"</p>
+                                <footer class="blockquote-footer">Carlos M, <cite>San Benito</cite></footer>
+                            </blockquote>
+                         </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="text-center my-5 bg-white-card p-5">
+                <h2>¿List@ para tu Fresi-Go?</h2>
+                <p class="lead">Haz tu pedido ahora y descubre tu nuevo antojo favorito.</p>
+                <button class="btn btn-primary-custom btn-lg" onclick="showPage('page-productos', document.querySelector('.nav-link[onclick*=\'page-productos\']'))">Ver Productos</button>
+            </section>
+        </div>
+
+        <!-- =================================================== -->
+        <!-- PÁGINA 2: ACERCA DE FRESI-GO                      -->
+        <!-- =================================================== -->
+        <div id="page-acerca" class="page-section">
+            <div class="bg-white-card p-5 mb-5">
+                <h1>Nuestra Pasión por lo Dulce</h1>
+                <p class="lead">Fresi-Go nació en San Salvador con una misión simple: llevar felicidad a tu puerta en forma del postre perfecto.</p>
+            </div>
+
+            <section class="my-5 bg-white-card p-5">
+                <h2>Nuestra Historia</h2>
+                <p>Somos un emprendimiento 100% salvadoreño, apasionados por la calidad. Empezamos en nuestra cocina, probando recetas hasta encontrar la crema perfecta y las fresas más frescas. Hoy, estamos orgullosos de compartir nuestro "antojo al alma" con todo San Salvador.</p>
+            </section>
+
+            <section class="my-5">
+                <h2 class="text-center mb-4">Misión y Visión</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                         <div class="bg-white-card p-4 h-100">
+                            <h4>Misión</h4>
+                            <p>Ofrecer la mejor experiencia gourmet de fresas con crema, combinando ingredientes de alta calidad con un servicio al cliente excepcional y entrega rápida.</p>
+                         </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="bg-white-card p-4 h-100">
+                            <h4>Visión</h4>
+                            <p>Ser la marca #1 de postres a domicilio en El Salvador, innovando constantemente con nuevos sabores y expandiendo nuestra alegría a más ciudades.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="my-5">
+                <h2 class="text-center mb-4">El Equipo Fresi-Go</h2>
+                <div class="row">
+                    <div class="col-md-4 text-center mb-3">
+                        <div class="bg-white-card p-4 h-100">
+                            <i class="fas fa-user-circle fa-3x text-accent mb-2"></i>
+                            <h5>[Tu Nombre]</h5>
+                            <p class="text-muted">Fundador / CEO</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center mb-3">
+                         <div class="bg-white-card p-4 h-100">
+                            <i class="fas fa-user-circle fa-3x text-accent mb-2"></i>
+                            <h5>(Nombre Ficticio)</h5>
+                            <p class="text-muted">Chef de Postres</p>
+                         </div>
+                    </div>
+                    <div class="col-md-4 text-center mb-3">
+                         <div class="bg-white-card p-4 h-100">
+                            <i class="fas fa-user-circle fa-3x text-accent mb-2"></i>
+                            <h5>(Nombre Ficticio)</h5>
+                            <p class="text-muted">Gerente de Logística</p>
+                         </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- PÁGINA 3: NUESTROS PRODUCTOS                   -->
+        <!-- ============================================== -->
+        <div id="page-productos" class="page-section">
+            <div class="bg-white-card p-5 mb-5">
+                <h1>Nuestros Productos Estrella</h1>
+                <p class="lead">Preparados al momento, solo para ti. Conoce nuestros antojos más pedidos.</p>
+            </div>
+            
+            <!-- Producto 1 (Imagen de usuario) -->
+            <div class="row mb-4 align-items-center">
+                <div class="col-md-6">
+                    <img src="Gemini_Generated_Image_yni8tpyni8tpyni8.jpg" alt="Fresi-Go Clásica" class="gallery-img">
+                </div>
+                <div class="col-md-6">
+                    <div class="bg-white-card p-4 h-100">
+                        <h2>Fresi-Go Clásica</h2>
+                        <p>La perfección en un vaso. Capas de fresas frescas, nuestra crema artesanal y un toque de canela. Simple, pero inolvidable.</p>
+                        <button class="btn btn-primary-custom">Pedir Ahora</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 2 (Imagen de usuario) -->
+            <div class="row mb-4 align-items-center">
+                 <div class="col-md-6 order-md-2">
+                    <img src="Gemini_Generated_Image_yni8tpyni8tpyni8 (1).jpg" alt="Fresi-Go Extrema" class="gallery-img">
+                </div>
+                <div class="col-md-6 order-md-1">
+                    <div class="bg-white-card p-4 h-100">
+                        <h2>Fresi-Go Extrema</h2>
+                        <p>Para los que lo quieren todo. Nuestra Clásica Fresi-Go recargada con extra crema, chispas de chocolate, almendras y sirope de fresa.</p>
+                        <button class="btn btn-primary-custom">¡La Quiero!</button>
+                    </div>
+                </div>
+            </div>
+
+             <!-- Producto 3 (Imagen de usuario) -->
+            <div class="row mb-4 align-items.center">
+                <div class="col-md-6">
+                    <img src="Gemini_Generated_Image_89stdo89stdo89st.jpg" alt="Fresi-Go Individual" class="gallery-img">
+                </div>
+                <div class="col-md-6">
+                    <div class="bg-white-card p-4 h-100">
+                        <h2>Fresi-Go Pequeño Antojo</h2>
+                        <p>La dosis personal de felicidad. El tamaño perfecto para ese antojo de media tarde, con todo el sabor de la Clásica.</p>
+                        <button class="btn btn-primary-custom">Añadir al Carrito</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- RECURSO ADICIONAL: Menú PDF -->
+            <section class="my-5 bg-white-card p-5">
+                <h2 class="text-center mb-4">Recurso Adicional: Menú Completo</h2>
+                <p class="text-center text-muted">Vea nuestro menú completo con todos los toppings y bebidas.</p>
+                <div class="text-center">
+                    <img src="menugrafico.png" alt="Menú Completo de Fresi-Go" class="img-fluid rounded shadow-sm">
+                </div>
+            </section>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- PÁGINA 4: GALERÍA (Con imágenes de producto)  -->
+        <!-- ============================================== -->
+        <div id="page-galeria" class="page-section">
+            <div class="bg-white-card p-5 mb-5">
+                <h1>Galería Fresi-Go</h1>
+                <p class="lead">#FresiGoSV. Un antojo digno de compartir. ¡Etiquétanos en tus fotos!</p>
+            </div>
+
+            <!-- Sección de Imágenes (Con imágenes de usuario) -->
+            <section class="my-5">
+                <h2 class="mb-4">Nuestros Antojos</h2>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <img src="Gemini_Generated_Image_yni8tpyni8tpyni8.jpg" alt="Producto Fresi-Go 1" class="gallery-img">
+                    </div>
+                    <div class="col-md-4">
+                        <img src="Gemini_Generated_Image_yni8tpyni8tpyni8 (1).jpg" alt="Producto Fresi-Go 2" class="gallery-img">
+                    </div>
+                    <div class="col-md-4">
+                        <img src="Gemini_Generated_Image_89stdo89stdo89st.jpg" alt="Producto Fresi-Go 3" class="gallery-img">
+                    </div>
+                    <div class="col-md-4">
+                        <img src="https://placehold.co/600x400/D92B48/FFFFFF?text=Cliente+Feliz+1" alt="Cliente Feliz 1" class="gallery-img">
+                    </div>
+                    <div class="col-md-4">
+                        <img src="https://placehold.co/600x400/4CAF50/FFFFFF?text=Nuestro+Equipo" alt="Nuestro Equipo" class="gallery-img">
+                    </div>
+                    <div class="col-md-4">
+                        <img src="https://placehold.co/600x400/333333/FFFFFF?text=Evento+Fresi-Go" alt="Evento Fresi-Go" class="gallery-img">
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Sección de Videos (Requerida) -->
+            <section class="my-5">
+                <h2 class="mb-4">Videos: Así Nace un Antojo</h2>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <h4 class="h5">La Preparación Perfecta</h4>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/VHSUesGaxlM" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                         <h4 class="h5">Unboxing Fresi-Go</h4>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/bSUtdc3nkjM" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- =================================================== -->
+        <!-- PÁGINA 5: CONTACTO (Localizado en San Salvador)   -->
+        <!-- =================================================== -->
+        <div id="page-contacto" class="page-section">
+            <div class="bg-white-card p-5 mb-5">
+                <h1>Contáctanos</h1>
+                <p class="lead">¿Dudas, pedidos grandes o sugerencias? ¡Nos encantaría escucharte!</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="bg-white-card p-4 h-100">
+                        <h2>Envíanos un Mensaje</h2>
+                        <form>
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="nombre" placeholder="Tu nombre" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Correo Electrónico</label>
+                                <input type="email" class="form-control" id="email" placeholder="tu@correo.com" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="asunto" class="form-label">Asunto</label>
+                                <input type="text" class="form-control" id="asunto" placeholder="Motivo de tu mensaje" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="mensaje" class="form-label">Mensaje</label>
+                                <textarea class="form-control" id="mensaje" rows="5" placeholder="Escribe aquí tu mensaje..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary-custom">Enviar Mensaje</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                     <div class="bg-white-card p-4 mb-4">
+                        <h2>Información de Contacto</h2>
+                        <ul class="list-unstyled fs-5">
+                            <li class="mb-2"><i class="fab fa-whatsapp me-2 text-accent"></i>WhatsApp: +503 72084626</li>
+                            <li class="mb-2"><i class="fas fa-envelope me-2 text-accent"></i>Correo: pedidos@fresi-go.sv</li>
+                            <li class="mb-2"><i class="fas fa-map-marker-alt me-2 text-accent"></i>Delivery en todo San Salvador</li>
+                        </ul>
+                     </div>
+                     
+                     <div class="bg-white-card p-4">
+                        <!-- MAPA REQUERIDO: San Salvador -->
+                        <h2>Nuestra Zona de Cobertura</h2>
+                        <p>Entregamos en San Salvador:</p>
+                        <div class="map-container">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d124042.80211333737!2d-89.281969446487!3d13.70247385579998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f633061155a646f%3A0x6f63ff9e3f8a0b0!2sSan%20Salvador%2C%20El%20Salvador!5e0!3m2!1ses-419!2sus!4v1700000000000" allowfullscreen="" loading="lazy"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer Fresi-Go -->
+    <footer class="footer-custom text-center py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-md-start mb-3 mb-md-0">
+                    <h5>Navegación</h5>
+                    <ul class="list-unstyled">
+                        <!-- Links actualizados a nuevas IDs -->
+                        <li><a href="#" onclick="showPage('page-inicio', document.querySelector('.nav-link[onclick*=\'page-inicio\']'))">Inicio</a></li>
+                        <li><a href="#" onclick="showPage('page-acerca', document.querySelector('.nav-link[onclick*=\'page-acerca\']'))">Acerca de Fresi-Go</a></li>
+                        <li><a href="#" onclick="showPage('page-productos', document.querySelector('.nav-link[onclick*=\'page-productos\']'))">Nuestros Productos</a></li>
+                        <li><a href="#" onclick="showPage('page-galeria', document.querySelector('.nav-link[onclick*=\'page-galeria\']'))">Galería</a></li>
+                        <li><a href="#" onclick="showPage('page-contacto', document.querySelector('.nav-link[onclick*=\'page-contacto\']'))">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h5>Síguenos</h5>
+                    <a class="mx-2 fs-4" href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
+                    <a class="mx-2 fs-4" href="https://www.twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a class="mx-2 fs-4" href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+             <div class="row mt-3">
+                 <div class="col-12 text-md-start">
+                    <p class="mb-1">Fresi-Go S.A. de C.V. - San Salvador, El Salvador</p>
+                    <p class="mb-0">"Un antojo al alma"</p>
+                 </div>
+             </div>
+        </div>
+    </footer>
+    
+    <!-- INFORMACIÓN DEL ESTUDIANTE (REQUERIDO) -->
+    <div class="footer-custom-dark text-white text-center py-3">
+        <div class="container">
+            <p class="mb-0">
+                <strong>Documentación del Proyecto:</strong>
+                Este sitio fue desarrollado por: <strong>Kevin Humberto Hernandez Sanchez</strong> - Estudiante de <strong>Técnico en software</strong> (Carnet: <strong>HS221100336</strong>)
+            </p>
+        </div>
+    </div>
+
+    <!-- REPRODUCTOR DE AUDIO (REQUERIDO) -->
+    <div class="audio-player">
+        <button id="play-pause-btn"><i class="fas fa-play"></i></button>
+        <span>Fresi-Go Mix</span>
+        <audio id="bg-music" loop>
+            <source src="Fresi-Go.mp3" type="audio/mpeg">
+            <source src="Fresi-Go endin.mp3" type="audio/mpeg">
+            Tu navegador no soporta audio.
+        </audio>
+    </div>
+
+
+    <!-- Scripts de Bootstrap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Script para navegación SPA -->
+    <script>
+        function showPage(pageId, navElement) {
+            // Ocultar todas las secciones
+            document.querySelectorAll('.page-section').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Mostrar la sección seleccionada
+            const activePage = document.getElementById(pageId);
+            if (activePage) {
+                activePage.classList.add('active');
+            }
+
+            // Actualizar la clase 'active' en el menú
+            if (navElement) {
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                    link.removeAttribute('aria-current');
+                });
+                navElement.classList.add('active');
+                navElement.setAttribute('aria-current', 'page');
+            }
+            
+            // Cerrar menú hamburguesa en móviles
+            const navbarToggler = document.querySelector('.navbar-toggler');
+            const navbarCollapse = document.querySelector('.navbar-collapse');
+            if (navbarCollapse.classList.contains('show')) {
+                navbarToggler.click();
+            }
+            window.scrollTo(0, 0);
+        }
+        
+        // Activar el primer link al cargar
+        document.addEventListener('DOMContentLoaded', () => {
+            const firstLink = document.querySelector('.nav-link[onclick*=\'page-inicio\']');
+            if(firstLink) {
+                firstLink.classList.add('active');
+                firstLink.setAttribute('aria-current', 'page');
+            }
+
+            // Lógica del reproductor de audio
+            const audio = document.getElementById('bg-music');
+            const playBtn = document.getElementById('play-pause-btn');
+            const playIcon = '<i class="fas fa-play"></i>';
+            const pauseIcon = '<i class="fas fa-pause"></i>';
+
+            playBtn.addEventListener('click', () => {
+                if (audio.paused) {
+                    audio.play();
+                    playBtn.innerHTML = pauseIcon;
+                } else {
+                    audio.pause();
+                    playBtn.innerHTML = playIcon;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
